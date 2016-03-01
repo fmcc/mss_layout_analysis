@@ -36,6 +36,7 @@ def process_page(page_path, img_path, label_path):
     img = misc.imread(img_path)[page.border.as_slice()]
     l_img = misc.imread(label_path)[page.border.as_slice()]
 
+    print("Scaling images")
     img = scale_img(img, (0.2,0.2))
     l_img = scale_img(l_img, (0.2,0.2))
 
@@ -44,6 +45,7 @@ def process_page(page_path, img_path, label_path):
     avg_dict = {}
     f_img = fft_img(img, window)
     height, width, _ = img.shape
+    print("Creating lookup table")
     # create a lookup table
     for i in range(1000):
         r = r_xy(0,height,0,width)
@@ -59,6 +61,7 @@ def process_page(page_path, img_path, label_path):
 
     new_label = np.zeros_like(l_img)
 
+    print("Creating kmeans labelled image")
     for h in range(0,height):
         for w in range(0,width):
         #h, w = r_xy(0,height,0,width)
@@ -91,7 +94,7 @@ def all_nearest_by_fourier(page_dir, img_dir, label_dir, output_dir):
         label_path = img_path(label_dir, page)
         click.echo("Creating %s" % out_path)
         out_img = process_page(p, i_path, label_path)
-        misc.imsave(out_path, labelled_img)
+        misc.imsave(out_path, out_img)
 
 
 if __name__ =='__main__':
