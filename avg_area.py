@@ -50,18 +50,20 @@ def lookup_from_page(page_path, img_path, label_path, window, avg_dict):
 
     return update_lookup_dict(img, l_img, avg_dict, window) 
 
-def process_page(page_path, img_path, window, avg_dict): 
+def process_page(page_path, img_path, label_path, window, avg_dict): 
 
     page = PrimaPage(page_path)
     img = misc.imread(img_path)[page.border.as_slice()]
     img = scale_img(img, (0.2,0.2))
+    l_img = misc.imread(label_path)[page.border.as_slice()]
+    l_img = scale_img(l_img, (0.2,0.2))
     f_img = fft_img(img, window)
     new_label = np.zeros_like(l_img)
 
     height, width, _ = img.shape
     for h in range(0,height):
         for w in range(0,width):
-            k, _ = closest_key(avg_dict, avg_fft(f_img, (h+win,w+win), window, int(window/2)))
+            k, _ = closest_key(avg_dict, avg_fft(f_img, (h+window,w+window), window, int(window/2)))
             new_label[h,w] = k
 
     return new_label
@@ -101,8 +103,8 @@ def avg_area(page_dir, img_dir, label_dir, output_dir):
         out_path = img_path(output_dir, page)
         i_path = img_path(img_dir, page, ".jpg")
         click.echo("Creating %s" % out_path)
-        out_img = process_page(p, i_path, window, avg_dict)
-        misc.imsave(out_path, labelled_img)
+        out_img = process_page(p, i_path, label_path, window, avg_dict)
+        misc.imsave(out_path, out_img)
 
 
 if __name__ =='__main__':
