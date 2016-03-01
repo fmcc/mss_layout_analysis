@@ -3,6 +3,11 @@ import os
 
 from scipy import misc
 import numpy as np
+import random
+from scaled_img import ScaledImage, Scale
+from page_prima.page import PrimaPage
+from utils import *
+from collections import defaultdict
 
 ###########
 def r_xy(x1,x2,y1,y2):
@@ -82,10 +87,10 @@ def all_nearest_by_fourier(page_dir, img_dir, label_dir, output_dir):
     for p in listpaths(page_dir):
         page = PrimaPage(p)
         out_path = img_path(output_dir, page)
-        img_path = img_path(img_dir, page, ".jpg")
+        i_path = img_path(img_dir, page, ".jpg")
         label_path = img_path(label_dir, page)
         click.echo("Creating %s" % out_path)
-        out_img = process_page(p, img_path, label_path)
+        out_img = process_page(p, i_path, label_path)
         misc.imsave(out_path, labelled_img)
 
 
