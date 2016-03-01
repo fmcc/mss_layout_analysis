@@ -19,5 +19,4 @@ def avg_fft(img, point, window, step):
             f = np.fft.fft2(img[sl])
             acc = acc + np.abs(f)
             count += 1
-    print(count)
     return acc / count
