@@ -4,11 +4,11 @@ import os
 from scipy import misc
 import numpy as np
 import random
-from scaled_img import ScaledImage, Scale
 from page_prima.page import PrimaPage
-from utils import *
 from collections import defaultdict
-from lib.fourier import *
+from img_lib.fourier import *
+from img_lib.scaled_img import ScaledImage, Scale
+from img_lib.utils import *
 
 ###########
 def r_xy(x1,x2,y1,y2):
