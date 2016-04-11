@@ -4,6 +4,16 @@ import operator as op
 import functools as f
 import itertools as it 
 
+def format_window(window):
+    """ Deals with a window being an int or tuple of two ints,
+        consistently returning a tuple of ints to allow for
+        square or rectangular windows. """
+    if isinstance(window, tuple):
+        win_x, win_y = window
+    else:
+        win_x = win_y = window
+    return win_x, win_y
+
 def default(f,a,b):
     return b if f(a) else a
 
@@ -52,7 +62,7 @@ def h_w(i):
     """ height and width from image, regardless of format """
     return i.shape[:2]
 
-def pad_img(img, w, v=127):
+def pad_img(img, w, v=128):
     if len(img.shape) == 3:
         t = ((w,w),(w,w),(0,0))
     else: 
