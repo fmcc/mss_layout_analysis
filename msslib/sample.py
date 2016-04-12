@@ -34,3 +34,19 @@ def point_shift(point:tuple, window: tuple or int):
         """
     win_x, win_y = format_window(window)
     return (point[0] + win_x-1, point[1] + win_y-1)
+
+def img_accessor(img:np.ndarray, modifier):
+    """ Create a getter function which binds the image with a function
+        modifying the selection provided. 
+        """
+    return lambda selection: img[modifier(selection)]
+
+def take_n_samples(img: np.ndarray, n: int):
+    # height, width, _ = img.shape
+    # random_coord = random_xy_coord_gen(0,height,0,width)
+    # for _ in itertools.repeat(None, n):
+        # point = random_coord()
+            # fft_point = point_shift(point, window_size)
+                # window = f_img[win_centred_on(fft_point, window_size)]
+                    # l = label[point]
+                        # observations[l].append(prepare_features(sampler(window)))

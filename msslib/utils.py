@@ -14,6 +14,9 @@ def format_window(window):
         win_x = win_y = window
     return win_x, win_y
 
+def identity(x):
+    return x
+
 def default(f,a,b):
     return b if f(a) else a
 
