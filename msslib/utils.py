@@ -17,6 +17,14 @@ def format_window(window):
 def identity(x):
     return x
 
+def compose(*functions):
+    """ A compose function which I've taken directly from:
+        https://mathieularose.com/function-composition-in-python/
+        """
+    def compose2(g, h):
+        return lambda x: g(h(x))
+    return f.reduce(compose2, functions, lambda x: x)
+
 def default(f,a,b):
     return b if f(a) else a
 

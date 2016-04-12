@@ -41,12 +41,8 @@ def img_accessor(img:np.ndarray, modifier):
         """
     return lambda selection: img[modifier(selection)]
 
-def take_n_samples(img: np.ndarray, n: int):
-    # height, width, _ = img.shape
-    # random_coord = random_xy_coord_gen(0,height,0,width)
-    # for _ in itertools.repeat(None, n):
-        # point = random_coord()
-            # fft_point = point_shift(point, window_size)
-                # window = f_img[win_centred_on(fft_point, window_size)]
-                    # l = label[point]
-                        # observations[l].append(prepare_features(sampler(window)))
+def take_n_samples(n:int, random_point, take_sample):
+    samples = []
+    for _ in it.repeat(None, n):
+        samples.append(take_sample(random_point()))
+    return samples
