@@ -1,5 +1,6 @@
 import scipy as sp
 import numpy as np
+import collections as c
 import operator as op
 import functools as f
 import itertools as it 
@@ -24,6 +25,21 @@ def compose(*functions):
     def compose2(g, h):
         return lambda x: g(h(x))
     return f.reduce(compose2, functions, lambda x: x)
+
+def applier(*functions):
+    """ Create a function which returns a tuple of results of 
+        applying the bound functions to a provided variable. 
+        """
+    return lambda x: tuple(func(x) for func in functions)
+
+def to_dict_list(t:[tuple]):
+    """ Transforms a list of (key, value) tuples into a dictionary of
+        lists. 
+        """
+    d = c.defaultdict(list)
+    for k, v in t:
+        d[k].append(v)
+    return d
 
 def default(f,a,b):
     return b if f(a) else a

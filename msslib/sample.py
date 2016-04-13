@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import itertools as it 
+import collections as c
 from msslib.utils import *
 
 def random_xy_coord_gen(x1:int, x2:int, y1:int, y2:int):
@@ -41,8 +42,12 @@ def img_accessor(img:np.ndarray, modifier):
         """
     return lambda selection: img[modifier(selection)]
 
-def take_n_samples(n:int, random_point, take_sample):
+def take_n_samples(n:int, get_data, process_data):
+    """ Given a function which provides a piece of data, and a function which
+        processes that data and returns some data structure, get and process 
+        n times, storing the results in a list which is returned. 
+        """
     samples = []
     for _ in it.repeat(None, n):
-        samples.append(take_sample(random_point()))
+        samples.append(process_data(get_data()))
     return samples
