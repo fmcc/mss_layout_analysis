@@ -69,13 +69,6 @@ def process_page(page_path, img_path, label_path, window, avg_dict):
     return new_label
 
 ######
-def listpaths(d):
-    """ Create a list of all paths for files in a directory """ 
-    print(d)
-    return [os.path.join(d, f) for f in os.listdir(d)]
-
-def img_path(path, page, ext='.png'):
-    return os.path.join(path, page.filename + ext)
 
 
 @click.command()

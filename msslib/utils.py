@@ -4,6 +4,7 @@ import collections as c
 import operator as op
 import functools as f
 import itertools as it 
+import os
 
 def format_window(window):
     """ Deals with a window being an int or tuple of two ints,
@@ -15,6 +16,8 @@ def format_window(window):
         win_x = win_y = window
     return win_x, win_y
 
+###
+### Functional utils
 def identity(x):
     return x
 
@@ -45,6 +48,19 @@ def default(f,a,b):
     return b if f(a) else a
 
 isNone = f.partial(op.eq, None)
+
+###
+### Path utils
+
+def listpaths(d):
+    """ Create a list of all paths for files in a directory """ 
+    return [os.path.join(d, f) for f in os.listdir(d)]
+
+def img_path(path, page, ext='.png'):
+    return os.path.join(path, page.filename + ext)
+
+###
+### Scaling utils
 
 def modify_tuple(t,i,a):
     l = list(t)
