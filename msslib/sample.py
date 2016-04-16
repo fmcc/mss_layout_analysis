@@ -51,3 +51,16 @@ def take_n_samples(n:int, get_data, process_data):
     for _ in it.repeat(None, n):
         samples.append(process_data(get_data()))
     return samples
+
+def sample_all_in_area(area_slice:slice, process_data):
+    """ Iterates over indices in a area and return values.
+        This is a poor way of doing this just now, but will do for now.
+        """
+    width = area_slice[0]
+    height = area_slice[1]
+    samples = []
+    for i in range(width.start, width.stop): 
+        for j in range(height.start, height.stop): 
+            samples.append(process_data((i,j)))
+    return samples
+

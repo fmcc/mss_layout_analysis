@@ -56,8 +56,26 @@ def listpaths(d):
     """ Create a list of all paths for files in a directory """ 
     return [os.path.join(d, f) for f in os.listdir(d)]
 
-def img_path(path, page, ext='.png'):
-    return os.path.join(path, page.filename + ext)
+def format_path(directory, extension, filename):
+    """ Create a path from a directory, base filename and an extension. 
+        """
+    return os.path.join(directory, "%s.%s" %(filename,extension))
+
+def only_basename(path):
+    """ Splits extension and directory from filepath.
+        """
+    basename, ext = os.path.splitext(os.path.basename(path))
+    return basename
+
+###
+### List utils
+
+def pairwise(iterable):
+    """ From the itertools recipes.
+        """
+    a, b = it.tee(iterable)
+    next(b, None)
+    return zip(a, b)
 
 ###
 ### Scaling utils

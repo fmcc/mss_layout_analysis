@@ -20,3 +20,4 @@ def labelled_centroids(observations_dict:dict) -> (()):
     for label, observations in observations_dict.items():
         centroids.append((label, calculate_centroid(observations)))
     return centroids
+
