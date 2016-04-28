@@ -1,7 +1,7 @@
 import click
 import os
-from page_prima.page import PrimaPage
-from page_prima.image import label_image
+from msslib.page_prima.page import PrimaPage
+from msslib.page_prima.image import label_image
 from scipy import misc
 
 def listpaths(d):
