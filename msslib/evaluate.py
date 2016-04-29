@@ -5,7 +5,6 @@ def normalised_confusion_matrix(label:np.ndarray, image:np.ndarray):
     """ Create a normalised confusion matrix for a label and image in the same format. 
         """
     cm = confusion_matrix(label.flatten(), image.flatten())
-    print(cm)
     cm_normalised = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
     return cm_normalised
 
