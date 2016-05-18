@@ -8,6 +8,9 @@ def normalised_confusion_matrix(label:np.ndarray, image:np.ndarray):
     cm_normalised = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
     return cm_normalised
 
+def normalise_confusion_matrix(cm: np.ndarray):
+    return cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
 def percent_correct(label:np.ndarray, image:np.ndarray):
     all_correct = label == image
     return all_correct.sum()/(all_correct.size/100)

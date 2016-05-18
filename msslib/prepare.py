@@ -13,11 +13,27 @@ def page_img_opener(page: PrimaPage):
         """
     return lambda path: misc.imread(path)[page.border.as_slice()]
 
+def page_path_img_opener(page_path: str):
+    """ As the function it wraps, but opens the file.  """
+    return page_img_opener(PrimaPage(page_path))
+
 def img_scaler(scale):
     """ Generates a function that will scale one or more images by the provided
         scaling function. 
         """
     return lambda *args: [scale_img(a, scale) for a in args]
+
+def img_scaler(scale):
+    """ Generates a function that will scale one or more images by the provided
+        scaling function. 
+        """
+    return lambda *args: [scale_img(a, scale) for a in args]
+
+def img_resizer(size):
+    """ Generates a function that will resize one or more images to the provided
+        size. 
+        """
+    return lambda *args: [misc.imresize(a, size) for a in args]
 
 def open_image_label(page_path, img_path, label_path): 
     """ Opens the page image and label and crops both to the maximum bounding

@@ -129,12 +129,3 @@ def pad_img(img, w, v=128):
     else: 
         t = ((w,w),(w,w))
     return np.lib.pad(img, t, mode='constant', constant_values=v)
-
-def win_iter(img_shape, win_shape, step):
-    """ Returns an iterator of slices over a shape """
-    h,w  = img_shape
-    w_h, w_w = win_shape
-    for i in range(0, h-w_h+1 ,step):
-        for j in range(0, w-w_w+1 ,step):
-            # (slice(),slice())
-            yield np.s_[i:i+w_h:1, j:j+w_w:1]
