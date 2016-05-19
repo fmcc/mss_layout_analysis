@@ -8,6 +8,12 @@ def prepare_fft_image(img: np.ndarray, win_size: int):
         """
     return pad_img(to_greyscale(img), win_size-1)
 
+def prepare_contrast_adjusted_fft_image(img: np.ndarray, win_size: int):
+    """ Rescales an image and applys contrast stretching 
+        then adding a mid-grey border.
+        """
+    return pad_img(std_dev_contrast_stretch(to_greyscale(img)), win_size-1, 0)
+
 def page_img_opener(page: PrimaPage):
     """ Generates function to open images and crop to a page boundary.
         """
@@ -23,17 +29,11 @@ def img_scaler(scale):
         """
     return lambda *args: [scale_img(a, scale) for a in args]
 
-def img_scaler(scale):
-    """ Generates a function that will scale one or more images by the provided
-        scaling function. 
-        """
-    return lambda *args: [scale_img(a, scale) for a in args]
-
 def img_resizer(size):
     """ Generates a function that will resize one or more images to the provided
         size. 
         """
-    return lambda *args: [misc.imresize(a, size) for a in args]
+    return lambda *args: [resize_img(a, size) for a in args]
 
 def open_image_label(page_path, img_path, label_path): 
     """ Opens the page image and label and crops both to the maximum bounding

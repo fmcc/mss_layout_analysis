@@ -1,5 +1,3 @@
-#! /bin
-
 # Imports required for CLI Script
 import click
 import os
@@ -34,13 +32,15 @@ def _train_centroids(no_of_samples:int, window_size:int, block_size: int, page_s
     access_f_img = img_accessor(f_img, compose(windower, shifter))
     # Define the sampling function
     make_observations = compose(prepare_features, real_fft, std_dev_contrast_stretch, access_f_img)
-    collected_samples = []
+    samples = []
 
     for w in win_iter(page_size, block_size):
-        block_labels, block_obs = take_n_samples(no_of_samples, random_point_in_window(w), applier(access_label, make_observations))
+        labelled_obs = take_n_samples(no_of_samples, random_point_in_window(w), applier(access_label, make_observations))
+        block_labels = [a[0] for a in labelled_obs]
+        block_obs = [a[1] for a in labelled_obs]
         most_common_label = Counter(block_labels).most_common(1)[0][0] 
         avg_block_obs = calculate_centroid(block_obs)
-        collected_samples.append((most_common_label, avg_block_obs))
+        samples.append((most_common_label, avg_block_obs))
 
     # Group samples by labels
     collected_samples = to_dict_list(samples)
@@ -48,7 +48,7 @@ def _train_centroids(no_of_samples:int, window_size:int, block_size: int, page_s
     return labelled_centroids(collected_samples)
 
 def centroids_from_pages(paths):
-    _get_centroids = f.partial(_train_centroids, 10, 41, 20, (1200,900))
+    _get_centroids = f.partial(_train_centroids, 10, 41, 20, (900, 1200))
     return labelled_centroids(to_dict_list(it.chain.from_iterable(map(_get_centroids, paths))))
 
 def new_labelled_page(no_of_samples:int, window_size:int, block_size:int, page_size: tuple, labelled_centroids:[tuple], page_paths:[str]):
@@ -69,7 +69,8 @@ def new_labelled_page(no_of_samples:int, window_size:int, block_size:int, page_s
     new_label = np.zeros_like(label)
     for w in win_iter(page_size, block_size):
         block_obs = take_n_samples(no_of_samples, random_point_in_window(w), make_observations)
-        avg_block_obs = calculate_centroid(block_obs)
+        # Need to expand dims since it'll only be one item
+        avg_block_obs = np.expand_dims(calculate_centroid(block_obs), axis=0)
         codes, dist = vq.vq(avg_block_obs, centroids)
         # Only one code being matched here. 
         new_label[w] = labels[codes[0]]
@@ -89,13 +90,13 @@ def average_clustering(page_dir, img_dir, label_dir, output_dir):
     # One of these could really be identity
     path_formatter = applier(get_page_path, get_img_path, get_label_path)
 
-    paths = list(filter(lambda x: 'RN' in x, listpaths(img_dir)))
+    paths = list(filter(lambda x: 'RN' in x, listpaths(label_dir)))
     random.shuffle(paths) 
     # We take 50 images to average over as a training set.
     training_paths = paths[:50] 
     
     trained_centroids = centroids_from_pages(map(path_formatter, training_paths))
-    label_page = compose(f.partial(new_labelled_page, 10, 41, 20, (1200, 900), trained_centroids), path_formatter)
+    label_page = compose(f.partial(new_labelled_page, 10, 41, 20, (900, 1200), trained_centroids), path_formatter)
     # And keep the rest to process with the resulting data. 
     process_paths = paths[50:]
 
