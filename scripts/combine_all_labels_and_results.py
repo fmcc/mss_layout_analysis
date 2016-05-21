@@ -28,14 +28,13 @@ def evaluate_results(page_dir, label_dir, results_dir):
     get_label_path = compose(f.partial(format_path, label_dir, 'png'), only_basename)
     get_results_path = compose(f.partial(format_path, results_dir, 'png'), only_basename)
 
-    output_name = "%s_confusion_matrices.npy" % only_basename(results_dir)
+    output_name = "%s_labels_and_results.npy" % only_basename(results_dir)
     # One of these could really be identity
     path_formatter = applier(get_page_path, get_label_path, get_results_path)
     paths = map(path_formatter, listpaths(results_dir))
-    label_results_pairs = map(open_and_flatten, paths)
+    label_results_pairs = map(open_and_flatten, paths) 
     label, results = f.reduce(lambda x,y: (np.append(x[0], y[0]), np.append(x[1], y[1])), label_results_pairs)
-    c_matrix = normalised_confusion_matrix(label, results)
-    np.save(output_name, c_matrix)
+    np.save(output_name, np.asarray((label, results)))
 
 if __name__ == '__main__':
     evaluate_results()

@@ -116,12 +116,13 @@ def scale_img(i, s, interpolation=0):
     return sp.misc.fromimage(i.resize(s, interpolation))
 
 def resize_img(i, s, interpolation=0):
-    """ Resizes an image to the provided height and width.
+    """ Resizes an image to the provided height and width, which are flipped to maintain
+        the same ordering as is used elsewhere in numpy. 
         misc.imresize would do the same, it just defaults to bilinear interpolation
         rather than nearest, which is required for scaling labels. Doing it this way
         for consistency with scale_img. """
     i = sp.misc.toimage(i)
-    return sp.misc.fromimage(i.resize(s, interpolation))
+    return sp.misc.fromimage(i.resize(s[::-1], interpolation))
 
 def to_greyscale(i):
     i = sp.misc.toimage(i)

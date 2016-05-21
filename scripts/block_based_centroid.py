@@ -48,7 +48,7 @@ def _train_centroids(no_of_samples:int, window_size:int, block_size: int, page_s
     return labelled_centroids(collected_samples)
 
 def centroids_from_pages(paths):
-    _get_centroids = f.partial(_train_centroids, 10, 41, 20, (900, 1200))
+    _get_centroids = f.partial(_train_centroids, 10, 41, 20, (1200, 900))
     return labelled_centroids(to_dict_list(it.chain.from_iterable(map(_get_centroids, paths))))
 
 def new_labelled_page(no_of_samples:int, window_size:int, block_size:int, page_size: tuple, labelled_centroids:[tuple], page_paths:[str]):
@@ -96,7 +96,7 @@ def average_clustering(page_dir, img_dir, label_dir, output_dir):
     training_paths = paths[:50] 
     
     trained_centroids = centroids_from_pages(map(path_formatter, training_paths))
-    label_page = compose(f.partial(new_labelled_page, 10, 41, 20, (900, 1200), trained_centroids), path_formatter)
+    label_page = compose(f.partial(new_labelled_page, 10, 41, 20, (1200, 900), trained_centroids), path_formatter)
     # And keep the rest to process with the resulting data. 
     process_paths = paths[50:]
 
