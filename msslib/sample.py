@@ -50,17 +50,17 @@ def result_matrix(img_shape: tuple, win_shape: tuple or int, step=False, result_
     img_y, img_x = img_shape
     y = int((img_y-win_y)/step_y) + 1
     x = int((img_x-win_x)/step_x) + 1
-    return np.empty((y,x)+z)
+    return np.empty((y,x)+result_shape)
 
 def mean_vector(vectors:[np.ndarray]):
     """ Mean vector from a list of vectors.  
         """
     return np.asarray(vectors).mean(axis=0)
 
-def most_common(labels:[]):
+def most_common(l:[]):
     """ Find the most common item in a list.  
         """
-    return Counter(block_labels).most_common(1)[0][0] 
+    return c.Counter(l).most_common(1)[0][0] 
 
 def point_shift(point:tuple, window: tuple or int):
     """ Moves a point by height-1 and width-1 of a given window to 

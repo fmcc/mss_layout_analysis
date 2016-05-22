@@ -9,7 +9,6 @@ from msslib.features import *
 from msslib.sample import *
 
 def init_sampler():
-    img, label, f_img = prepare_page_accessors(win_size, page_size, page_paths)
     page_size = (1200,900)
     block_size = (20,20)
     no_of_samples = 10
@@ -35,17 +34,21 @@ def compile_samples(page_dir, img_dir, label_dir, output_dir):
     get_img_path = compose(f.partial(format_path, img_dir, 'jpg'), only_basename)
     get_label_path = compose(f.partial(format_path, label_dir, 'png'), only_basename)
 
-    create_output_path = compose(f.partial(format_path, output_dir, 'npy'), only_basename)
+    create_label_out_path = compose(f.partial(format_path, output_dir, 'npy', label='_label'), only_basename)
+    create_data_out_path = compose(f.partial(format_path, output_dir, 'npy', label='_data'), only_basename)
     # One of these could really be identity
     path_formatter = applier(get_page_path, get_img_path, get_label_path)
     sampler = init_sampler()
     paths = list(filter(lambda x: 'RN' in x, listpaths(label_dir)))
 
     for p in paths:
-        data_out = sampler(*label_and_data(path_formatter(p)))
-        path_out = create_output_path(p)
-        print("Saving %s" % path_out)
-        np.save(path_out, data_out)
+        label, data = sampler(*label_and_data(path_formatter(p)))
+        data_out = create_data_out_path(p)
+        label_out = create_label_out_path(p)
+        print("Saving %s" % label_out)
+        np.save(label_out, label)
+        print("Saving %s" % data_out)
+        np.save(data_out, data)
 
 if __name__=='__main__':
     compile_samples()
