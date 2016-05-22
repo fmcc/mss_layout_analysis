@@ -19,16 +19,48 @@ def win_centred_on(point:tuple, window: tuple or int):
     return np.s_[s_x:s_x+win_x,s_y:s_y+win_y]
 
 def win_iter(img_shape: tuple, win_shape: tuple or int, step=False):
-    """ Returns an iterator of slices over a shape """
-    win_x, win_y = format_window(win_shape)
+    """ Iterator of 2d slices over a numpy ndarray.
+        Both img_shape and win_shape are in (height, width) format, 
+        and iteration will be in row order. """
+    win_y, win_x = format_window(win_shape)
     if not step:
-        step_x, step_y = win_x, win_y
+        step_y, step_x = win_y, win_x
     else: 
-        step_x, step_y = format_window(step)
-    img_x, img_y = img_shape
-    for i in range(0, img_x-win_x+1, step_x):
-        for j in range(0, img_y-win_y+1, step_y):
-            yield np.s_[i:i+win_x:1, j:j+win_y:1]
+        step_y, step_x = format_window(step)
+    img_y, img_x = img_shape
+    for i in range(0, img_y-win_y+1, step_y):
+        for j in range(0, img_x-win_x+1, step_x):
+            yield np.s_[i:i+win_y:1, j:j+win_x:1]
+
+def point_iter(arr:np.ndarray):
+    """ Iterator of indices in a numpy ndarray.
+        Intended to be zipped with win_iter. 
+        """
+    y, x = arr.shape[0], arr.shape[1]
+    for i in range(0, y):
+        for j in range(0, x):
+            yield np.s_[i,j]
+
+def result_matrix(img_shape: tuple, win_shape: tuple or int, step=False, result_shape=(1,)):
+    win_y, win_x = format_window(win_shape)
+    if not step:
+        step_y, step_x = win_y, win_x
+    else: 
+        step_y, step_x = format_window(step)
+    img_y, img_x = img_shape
+    y = int((img_y-win_y)/step_y) + 1
+    x = int((img_x-win_x)/step_x) + 1
+    return np.empty((y,x)+z)
+
+def mean_vector(vectors:[np.ndarray]):
+    """ Mean vector from a list of vectors.  
+        """
+    return np.asarray(vectors).mean(axis=0)
+
+def most_common(labels:[]):
+    """ Find the most common item in a list.  
+        """
+    return Counter(block_labels).most_common(1)[0][0] 
 
 def point_shift(point:tuple, window: tuple or int):
     """ Moves a point by height-1 and width-1 of a given window to 
