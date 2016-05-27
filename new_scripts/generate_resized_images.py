@@ -16,7 +16,7 @@ def generate_resized_images(height, width, page_dir, image_dir, label_dir, outpu
         file, then resizing the image down to the defined size. 
         """
     get_page_path = compose(f.partial(format_path, page_dir, 'xml'), only_basename)
-    get_img_path = compose(f.partial(format_path, img_dir, 'jpg'), only_basename)
+    get_img_path = compose(f.partial(format_path, image_dir, 'jpg'), only_basename)
     get_label_path = compose(f.partial(format_path, label_dir, 'png'), only_basename)
     
     label_out_dir = os.path.join(output_dir, 'labels') 

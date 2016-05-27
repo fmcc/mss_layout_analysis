@@ -2,6 +2,7 @@
 Functions for image manipulation. 
 """
 from scipy import misc
+from PIL import Image
 import numpy as np
 from .modify import *
 
@@ -42,3 +43,11 @@ def pad_img(img, w, v=128):
         t = ((w,w),(w,w))
     return np.lib.pad(img, t, mode='constant', constant_values=v)
 
+def overlay_imgs(img: np.ndarray, overlay: np.ndarray, opacity=0.5):
+    """ Takes two images and overlays the latter over the former at the 
+        given opacity. 
+        """
+    img = misc.toimage(img).convert("RGBA")
+    overlay = misc.toimage(overlay).convert("RGBA")
+    new_img = Image.blend(img, overlay, opacity)
+    return misc.fromimage(new_img)

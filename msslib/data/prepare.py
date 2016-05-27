@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import misc
-from ..page_prima.page import PrimaPage
-from msslib.utils import *
+from .structures import *
+from ..utils import *
 
 def prepare_fft_image(img: np.ndarray, win_size: int):
     """ Rescales an image and adds a mid-grey border.

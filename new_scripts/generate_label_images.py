@@ -10,7 +10,7 @@ def generate_label_images(page_dir, label_dir):
     paths = listpaths(page_dir)
     for p in paths:
         page = PrimaPage(p)
-        img = label_ms_image(page)
+        img = label_mss_image(page)
         out_path = format_path(label_dir, 'png', only_basename(p))
         misc.imsave(out_path, img)
 
