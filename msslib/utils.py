@@ -138,3 +138,12 @@ def pad_img(img, w, v=128):
     else: 
         t = ((w,w),(w,w))
     return np.lib.pad(img, t, mode='constant', constant_values=v)
+
+def flatten_vector_matrix(a: np.ndarray):
+    """ Flattens a matrix so that the size of the final dimension is always preserved. 
+        """
+    return np.reshape(a, (-1, a.shape[-1]))
+
+
+
+
