@@ -2,6 +2,8 @@ import numpy as np
 from matplotlib import colors, cm
 import seaborn as sns 
 
+mss_labels = ['image background', 'page', 'marginalia', 'note', 'main text']
+
 def to_rgb(rgba: np.ndarray):
     """Converts a RGBA colour in the [0,1] range to RGB in the [0,255] range"""
     return np.asarray(rgba[:3])*255
