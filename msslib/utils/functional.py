@@ -1,10 +1,10 @@
 """
-A set of functions that
+Functions used for programming in a functional style in Python.
 """
-
-import functools as f
 import collections as c
+import functools as f
 import itertools as it
+import operator as op
 
 def identity(x):
     return x
@@ -39,11 +39,7 @@ def pairwise(iterable):
     next(b, None)
     return zip(a, b)
 
-
-
 def default(f,a,b):
     return b if f(a) else a
 
 isNone = f.partial(op.eq, None)
-
-

@@ -1,5 +1,5 @@
 import numpy as np
-from msslib.utils import *
+from ..utils import *
 
 def prepare_features(arr: np.ndarray):
     """ Prepare an FFT matrix for use as a set of features. """

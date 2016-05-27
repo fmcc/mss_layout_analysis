@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import misc
-from msslib.page_prima.page import PrimaPage
+from ..page_prima.page import PrimaPage
 from msslib.utils import *
 
 def prepare_fft_image(img: np.ndarray, win_size: int):

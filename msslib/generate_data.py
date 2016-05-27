@@ -1,8 +1,5 @@
 import functools as f
-
-from msslib.sample import *
-from msslib.features import *
-from msslib.prepare import *
+from .observe import *
 
 def prepare_page_accessors(window_size:int or tuple, page_size:tuple, page_paths:[str]):
     """ Returns a tuple of functions for accessing the original image,

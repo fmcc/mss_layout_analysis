@@ -1,24 +1,41 @@
+"""
+Functions for image manipulation. 
+"""
 from scipy import misc
 import numpy as np
+from .modify import *
+
+def scale_img(i, s, interpolation=0):
+    """ Resizes an image on the basis of a tuple of scaling factors.
+        """
+    i = misc.toimage(i)
+    s = scale_tuple(i.size, s)
+    return misc.fromimage(i.resize(s, interpolation))
 
 def resize_img(i, s, interpolation=0):
     """ Resizes an image to the provided height and width, which are flipped to maintain
         the same ordering as is used elsewhere in numpy. 
         misc.imresize would do the same, it just defaults to bilinear interpolation
         rather than nearest, which is required for scaling labels. Doing it this way
-        for consistency with scale_img. """
+        for consistency with scale_img. 
+        """
     i = misc.toimage(i)
     return misc.fromimage(i.resize(s[::-1], interpolation))
 
 def to_greyscale(i):
+    """ Convert an image to greyscale using PIL. 
+        """
     i = misc.toimage(i)
     return misc.fromimage(i.convert('L'))
 
 def h_w(i):
-    """ Height and width from image, regardless of format """
+    """ Height and width from image, regardless of format.  
+        """
     return i.shape[:2]
 
 def pad_img(img, w, v=128):
+    """ Pads an image with a border of size w containing value v.
+        """
     if len(img.shape) == 3:
         t = ((w,w),(w,w),(0,0))
     else: 

@@ -1,6 +1,7 @@
-
-
-
+"""
+Functions related to file and path manipulation.
+"""
+import os
 
 def listpaths(d):
     """ Create a list of all paths for files in a directory """ 

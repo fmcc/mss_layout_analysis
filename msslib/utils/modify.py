@@ -29,9 +29,11 @@ def scale_slice(sl, s):
             )
     return tuple(valid_step(s_t) for s_t in scale_tuples(map(slice_tuple, sl), reversed(s)))
 
-def scale_img(i, s, interpolation=0):
-    """ Resizes an image on the basis of a tuple of scaling factors."""
-    i = sp.misc.toimage(i)
-    s = scale_tuple(i.size, s)
-    return sp.misc.fromimage(i.resize(s, interpolation))
-
+def as_pair(p: int or float or tuple) -> (int or float):
+    """ Consistently return a tuple of ints or floats.
+        """
+    if isinstance(p, tuple):
+        a, b = p
+    else:
+        a = b = p
+    return a, b

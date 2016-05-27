@@ -1,3 +1,6 @@
+"""
+Data structures and models particular to msslib.
+"""
 from xml.etree import ElementTree as etree
 import re
 import os.path

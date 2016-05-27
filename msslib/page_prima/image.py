@@ -8,9 +8,6 @@ def col_poly(d,p,l):
     col = c[l]
     d.polygon(p, outline=col, fill=col)
     
-def _i_t(l):
-    return [(int(i),int(j)) for i,j in l]
-
 def label_image(page):
     img = Image.new('L', page.dimensions, c[0])
     draw = ImageDraw.Draw(img)
