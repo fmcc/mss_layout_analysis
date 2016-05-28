@@ -13,7 +13,7 @@ def random_xy_coord_gen(x1:int, x2:int, y1:int, y2:int):
 def win_centred_on(point:tuple, window: tuple or int):
     """ Generate a window slice centred on a given x,y coordinate. 
         """ 
-    win_x, win_y = format_window(window)
+    win_x, win_y = as_pair(window)
     s_x = point[0] - win_x // 2
     s_y = point[1] - win_y // 2
     return np.s_[s_x:s_x+win_x,s_y:s_y+win_y]
@@ -22,11 +22,11 @@ def win_iter(img_shape: tuple, win_shape: tuple or int, step=False):
     """ Iterator of 2d slices over a numpy ndarray.
         Both img_shape and win_shape are in (height, width) format, 
         and iteration will be in row order. """
-    win_y, win_x = format_window(win_shape)
+    win_y, win_x = as_pair(win_shape)
     if not step:
         step_y, step_x = win_y, win_x
     else: 
-        step_y, step_x = format_window(step)
+        step_y, step_x = as_pair(step)
     img_y, img_x = img_shape
     for i in range(0, img_y-win_y+1, step_y):
         for j in range(0, img_x-win_x+1, step_x):
@@ -42,11 +42,11 @@ def point_iter(arr:np.ndarray):
             yield np.s_[i,j]
 
 def result_matrix(img_shape: tuple, win_shape: tuple or int, step=False, result_shape=(1,)):
-    win_y, win_x = format_window(win_shape)
+    win_y, win_x = as_pair(win_shape)
     if not step:
         step_y, step_x = win_y, win_x
     else: 
-        step_y, step_x = format_window(step)
+        step_y, step_x = as_pair(step)
     img_y, img_x = img_shape
     y = int((img_y-win_y)/step_y) + 1
     x = int((img_x-win_x)/step_x) + 1
@@ -66,7 +66,7 @@ def point_shift(point:tuple, window: tuple or int):
     """ Moves a point by height-1 and width-1 of a given window to 
         accommodate the margin added to a image. 
         """
-    win_x, win_y = format_window(window)
+    win_x, win_y = as_pair(window)
     return (point[0] + win_x-1, point[1] + win_y-1)
 
 def random_point_in_window(win: slice):

@@ -5,8 +5,8 @@ from msslib.generate_data import *
 from msslib.features import *
 from msslib.sample import *
 
-def init_sampler():
-    block_size = (20,20)
+def init_sampler(block_size):
+    block_size = as_pair(block_size)
     no_of_samples = 10
     group_label = most_common
     group_obs = mean_vector
@@ -14,8 +14,7 @@ def init_sampler():
 
 def label_and_data(page_paths:[str]):
     window_size = 41
-    page_size = (1200,900)
-    img, label, f_img = prepare_page_accessors(window_size, page_size, page_paths)
+    img, label, f_img = prepare_page_accessors(window_size, *page_paths)
     get_data = compose(prepare_features, real_fft, std_dev_contrast_stretch, f_img)
     return label, get_data 
 
@@ -29,15 +28,15 @@ def generate_block_based_dataset(block_size, img_dir, label_dir, output_dir):
     get_label_path = compose(f.partial(format_path, label_dir, 'png'), only_basename)
 
     label_out_dir = os.path.join(output_dir, 'labels') 
-    os.makedirs(label_out_dir)
+    mkdir(label_out_dir)
     data_out_dir = os.path.join(output_dir, 'data') 
-    os.makedirs(data_out_dir)
+    mkdir(data_out_dir)
 
     create_label_out_path = compose(f.partial(format_path, label_out_dir, 'npy'), only_basename)
     create_data_out_path = compose(f.partial(format_path, data_out_dir, 'npy'), only_basename)
 
     path_formatter = applier(get_img_path, get_label_path)
-    sampler = init_sampler()
+    sampler = init_sampler(block_size)
     paths = listpaths(label_dir)
 
     for p in paths:
@@ -48,9 +47,6 @@ def generate_block_based_dataset(block_size, img_dir, label_dir, output_dir):
         np.save(label_out, label)
         print("Saving %s" % data_out)
         np.save(data_out, data)
-
-    return 
-
 
 if __name__=='__main__':
     generate_block_based_dataset()

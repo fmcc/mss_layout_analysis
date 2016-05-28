@@ -1,23 +1,17 @@
 import functools as f
+from scipy import misc
 from .observe import *
 
-def prepare_page_accessors(window_size:int or tuple, page_size:tuple, page_paths:[str]):
-    """ Returns a tuple of functions for accessing the original image,
-        the label image, and the bordered greyscale image. 
-        """
+def prepare_page_accessors(window_size:int or tuple, img_path: str, label_path: str):
     # Initialise a function to get a window of this size from an image
     windower = f.partial(win_centred_on, window=window_size)
     # Initialise a function to shift a point to accomodate a border from this window size. 
     shifter = f.partial(point_shift, window=window_size)
-    # Initialise a scaling function for images. 
-    resizer = img_resizer(page_size)
     # Open the two images 
-    img, label = open_image_label(*page_paths)
-    # Scale both images down
-    img, label = resizer(img, label)
-    # Create an image for sampling with FFT 
+    img = misc.imread(img_path)
+    label = misc.imread(label_path)
+    # Create a bordered greyscale image for fft windows. 
     f_img = prepare_fft_image(img, window_size)
-    #define methods to access images.
     access_img = img_accessor(img, identity)
     access_label = img_accessor(label, identity)
     access_f_img = img_accessor(f_img, compose(windower, shifter))

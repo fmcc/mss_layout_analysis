@@ -35,7 +35,7 @@ def gaussian_weighter(size:tuple or int):
     """ Provides a function for weighting with a gaussian matrix of a 
         defined size. 
         """
-    size = format_window(size)
+    size = as_pair(size)
     gaussian = gaussian_matrix(size, (size[0]/2, size[1]/2))
     return lambda arr: arr*gaussian
 

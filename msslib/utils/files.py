@@ -17,3 +17,9 @@ def only_basename(path):
         """
     basename, ext = os.path.splitext(os.path.basename(path))
     return basename
+
+def mkdir(path):
+    """ Creates a directory if it doesn't already exist. 
+        """
+    if not os.path.exists(path):
+        os.makedirs(path)

@@ -20,9 +20,9 @@ def generate_resized_images(height, width, page_dir, image_dir, label_dir, outpu
     get_label_path = compose(f.partial(format_path, label_dir, 'png'), only_basename)
     
     label_out_dir = os.path.join(output_dir, 'labels') 
-    os.makedirs(label_out_dir)
+    mkdir(label_out_dir)
     image_out_dir = os.path.join(output_dir, 'images') 
-    os.makedirs(image_out_dir)
+    mkdir(image_out_dir)
 
     create_label_out_path = compose(f.partial(format_path, label_out_dir, 'png'), only_basename)
     create_image_out_path = compose(f.partial(format_path, image_out_dir, 'jpg'), only_basename)
