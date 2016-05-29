@@ -2,11 +2,11 @@ import click
 import os
 
 from msslib.generate_data import *
-from msslib.features import *
-from msslib.sample import *
+from msslib.observe import *
 
 def init_sampler(block_size):
     block_size = as_pair(block_size)
+    page_size = (1200, 900)
     no_of_samples = 10
     group_label = most_common
     group_obs = mean_vector
