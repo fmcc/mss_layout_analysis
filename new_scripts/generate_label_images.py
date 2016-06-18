@@ -8,7 +8,8 @@ from scipy import misc
 @click.argument('label_dir', type=click.Path(exists=True, resolve_path=True))
 def generate_label_images(page_dir, label_dir):
     paths = listpaths(page_dir)
-    for p in paths:
+    for p in filter(lambda x: x.endswith('xml'), paths):
+        print(p)
         page = PrimaPage(p)
         img = label_mss_image(page)
         out_path = format_path(label_dir, 'png', only_basename(p))

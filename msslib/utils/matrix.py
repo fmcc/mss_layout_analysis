@@ -19,7 +19,7 @@ class Spiraliser():
     """ Flatten a matrix in a outward spiral from the centre
         and restore to the original shape. """
 
-    def _gen_spiral(size: int):
+    def _gen_spiral(self, size: int):
         x = y = size // 2
         x_dir, y_dir = -1, 0
         out_arr = np.empty((size, size))
@@ -48,7 +48,7 @@ class Spiraliser():
         max_dim = max(height, width)
         x_shift = (max_dim-width)//2
         y_shift = (max_dim-height)//2
-        spiral = gen_spiral(max_dim)
+        spiral = self._gen_spiral(max_dim)
         self.flatten_ = np.zeros((height, width), dtype=int)
         self.reshape_ = np.zeros((self.flatten_.size,2), dtype=int)
         mask = np.zeros_like(spiral)
@@ -80,7 +80,6 @@ class Spiraliser():
             out_arr = np.empty(self.flatten_.shape[:2])
         else:
             out_arr = np.empty(self.flatten_.shape[:2] + arr.shape[1:])
-        print(out_arr.shape)
         for i in range(arr.shape[0]):
             out_arr[tuple(self.reshape_[i])] = arr[i]
         return out_arr
